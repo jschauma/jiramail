@@ -1,0 +1,96 @@
+.\"	Copyright (c) 2012, Jan Schaumann <jschauma@netmeister.org>
+.\"
+.Dd August 22, 2012
+.Dt JIRAMAIL 1
+.Os
+.Sh NAME
+.Nm jiramail
+.Nd filter email and post the body to Jira as a comment
+.Sh SYNOPSIS
+.Nm
+.Op Fl dhsv
+.Op Fl c Ar file
+.Sh DESCRIPTION
+Atlassian's Jira ticketing system requires per-project email addresses to
+be set up in order for users to be able to reply to ticket mail and get
+their response added as a comment.
+Instead of jumping through these hoops,
+.Nm
+allows you to simply pipe your email into it, and it will post the comment
+using the Jira API instead.
+.Sh OPTIONS
+The following options are supported by
+.Nm :
+.Bl -tag -width _c_file_
+.It Fl d
+don't do anything; useful for debugging in combination with
+.Fl v
+.It Fl c Ar file
+read configuration from this file
+.It Fl h
+print a short usage message and exit
+.It Fl s
+swallow the input
+.It Fl v
+increase verbosity
+.El
+.Sh DETAILS
+.Nm
+reads an SMTP message from STDIN.
+It will look for a ticket name and number (such as "PROJ-123") in the
+"Subject: " header.
+For each such string found, it will post the body of the message as a
+comment into the given ticket.
+.Pp
+After processing the input and updating any tickets and unless the
+.Fl s
+flag is given,
+.Nm
+will print out the original email with one single modification:
+the Jira email address to which the email was addressed is removed from
+the To, Cc or Bcc header.
+This allows you to use
+.Nm
+as a general email filter as well as to simultaneously copy individual
+addresses and update a ticket.
+.Sh CONFIGURATION FILE
+.Nm
+reads a simple configuration file containing key=value pairs of strings.
+It will ignore all other content as well as anything including and
+following a '#' character.
+.Nm
+will only use the following keys:
+.Bl -tag -width password_
+.It API
+The URL path of the Jira API to update a ticket.
+Defaults to "/rest/api/latest/issue/".
+.It AUTH
+The URL path of the Jira API to authenticate.
+Defaults to "/rest/auth/latest/session".
+.It FROM
+The username to submit the comment as.
+If not set, taken from the 'From: ' field of the mail.
+.It HOST
+The API hostname.
+If this does not start with either "http://" or "https://", then the hostname
+will be prefixed with "https://".
+.It JIRA
+The address from which ticket updates are coming, ie what we'd be
+replying to.
+.It JIRA_PASS
+The password used to authenticate against Jira.
+If not set,
+.Nm
+will look at the JIRA_PASS environment variable and if that is not set
+either prompt the user.
+It is strongly recommended against setting this in the configuration file,
+but support is provided as it is one of the most convenient options.
+.El
+.Sh EXIT STATUS
+.Ex -std
+.Sh HISTORY
+.Nm
+was initially written by
+.An Jan Schaumann
+.Aq jschauma@netmeister.org
+in August 2012.

@@ -1,0 +1,16 @@
+Atlassian's Jira ticketing system requires per-project email addresses to
+be set up in order for users to be able to reply to ticket mail and get
+their response added as a comment.  Instead of jumping through these
+hoops, jiramail allows you to simply pipe your email into it, and it will
+post the comment using the Jira API instead.
+
+Requirements:
+	- python (presumably > 2.5)
+
+Installation:
+	- install -c -m 755 src/jiramail.py /somewhere/in/your/path/jiramail
+	- install -c -m 444 doc/jiramail.1 /somewhere/in/your/manpath/man1/jiramail.1
+
+Questions/comments:
+	jschauma@netmeister.org
+	http://www.netmeister.org/apps/jiramail/
