@@ -8,6 +8,9 @@ Requirements:
 	- python (presumably > 2.5)
 
 Installation:
+	make install
+
+	or:
 	- install -c -m 755 src/jiramail.py /somewhere/in/your/path/jiramail
 	- install -c -m 444 doc/jiramail.1 /somewhere/in/your/manpath/man1/jiramail.1
 
